@@ -1,0 +1,135 @@
+// Simple Java Project: Student Management System
+
+import java.util.*;
+
+// Student Class
+class Student {
+    private int id;
+    private String name;
+    private String grade;
+
+    public Student(int id, String name, String grade) {
+        this.id = id;
+        this.name = name;
+        this.grade = grade;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Grade: " + grade;
+    }
+}
+
+// StudentManager Class
+class StudentManager {
+    private List<Student> students;
+
+    public StudentManager() {
+        students = new ArrayList<>();
+    }
+
+    public void addStudent(String name, String grade) {
+        int id = students.size() + 1;
+        students.add(new Student(id, name, grade));
+        System.out.println("Student added successfully. ID: " + id);
+    }
+
+    public void listStudents() {
+        System.out.println("\nList of Students:");
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+
+    public void updateGrade(int id, String newGrade) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                student.setGrade(newGrade);
+                System.out.println("Grade updated successfully for Student ID: " + id);
+                return;
+            }
+        }
+        System.out.println("Student ID not found.");
+    }
+
+    public void deleteStudent(int id) {
+        Iterator<Student> iterator = students.iterator();
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            if (student.getId() == id) {
+                iterator.remove();
+                System.out.println("Student removed successfully. ID: " + id);
+                return;
+            }
+        }
+        System.out.println("Student ID not found.");
+    }
+}
+
+// Main Class
+public class StudentManagementSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        StudentManager manager = new StudentManager();
+
+        while (true) {
+            System.out.println("\nStudent Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. List Students");
+            System.out.println("3. Update Grade");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter student grade: ");
+                    String grade = scanner.nextLine();
+                    manager.addStudent(name, grade);
+                    break;
+                case 2:
+                    manager.listStudents();
+                    break;
+                case 3:
+                    System.out.print("Enter student ID to update grade: ");
+                    int idToUpdate = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter new grade: ");
+                    String newGrade = scanner.nextLine();
+                    manager.updateGrade(idToUpdate, newGrade);
+                    break;
+                case 4:
+                    System.out.print("Enter student ID to delete: ");
+                    int idToDelete = scanner.nextInt();
+                    manager.deleteStudent(idToDelete);
+                    break;
+                case 5:
+                    System.out.println("Exiting Student Management System. Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
